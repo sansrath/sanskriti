@@ -1,0 +1,62 @@
+ $str=mysqli_real_escape_string($conn,$_POST['str']);
+	 $sql="SELECT Location, State,Amenities,Image,'places' FROM places where 
+	 Location like '%$str%' or State like '%$str%' or Amenities like '%$str%' or Image like '%$str%'
+	 UNION
+	 SELECT Location, State,Amenities,Image,'places' FROM places where 
+	 Location like '%$str%' or State like '%$str%' or Amenities like '%$str%' or Image like '%$str%' ";
+	$res=mysqli_query($conn,$sql);
+	if(mysqli_num_rows($res)>0){
+		while($row=mysqli_fetch_assoc($res)){
+        echo "<a href='show.php?Location=".$row['Location']."&t=".$row['places']."'>".$row['State']."</a>";
+	    }
+	} 
+	else{
+		echo "no";
+	}
+
+
+
+
+
+
+
+
+
+
+    if(isset($_GET['Location']) && $_GET['Location']>0 &&  isset($_GET['t']) && $_GET['t']!='')
+   {
+    $Location=mysqli_real_escape_string($conn,$_GET['Location']);
+    $t=mysqli_real_escape_string($conn,$_GET['t']);
+    if($t=="places"){
+      $table="places";
+     $sql="SELECT Location, State,Amenities FROM $table WHERE Location='$Location'";
+    }else{
+      header('location:index.php');
+      die();
+    }
+    $res=mysqli_query($conn,$sql);
+    if($res>0){
+      $row=mysqli_fetch_assoc($res);
+      echo "<h2>".$row['Location']."</h2>";
+      echo "<h2>".$row['State']."</h2>";
+      echo "<h2>".$row['Amenities']."</h2>";
+      echo "<h2>".$row['Contact No.']."</h2>";
+      echo "<h2>".$row['Location']."</h2>";
+    }else{
+      header('location:index.php');
+      die();
+    }
+   }
+  ?>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    
+  </body>
+  </html>
